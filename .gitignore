@@ -1,3 +1,4 @@
 Firmware/Debug
 Firmware/Release
 Firmware/.settings/language.settings.xml
+Firmware/*.launch
