@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="034bcae3-c28b-4ffb-9349-a382ecf925a3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/.mxproject" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/.mxproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/common.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/common.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/mb_rtu_app.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/mb_rtu_app.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/mb_rtu_app.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/mb_rtu_app.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/modbus_slave.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/modbus_slave.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/modbus_slave.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/modbus_slave.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/top.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/top.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Inc/main.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Inc/main.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Inc/stm32f1xx_hal_conf.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Inc/stm32f1xx_hal_conf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Src/stm32f1xx_hal_msp.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Src/stm32f1xx_hal_msp.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/PistonPump.ioc" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/PistonPump.ioc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/USB_DEVICE/App/usbd_cdc_if.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/USB_DEVICE/App/usbd_cdc_if.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2rXqWhqhNRYG7OpsFIOIOloq5ut" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "sarah-devel"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="034bcae3-c28b-4ffb-9349-a382ecf925a3" name="Changes" comment="" />
+      <created>1736715800587</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1736715800587</updated>
+    </task>
+    <servers />
+  </component>
+</project>

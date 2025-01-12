@@ -1,8 +1,8 @@
-/**
- * @file       modbus_slave.c
- * @brief      file_brief
- * @addtogroup gr
- * @{
+/*
+ * modbus_slave.c
+ *
+ *  Created on: Dec 10, 2024
+ *      Author: Riki
  */
 
 /* Includes ------------------------------------------------------------------*/
@@ -18,45 +18,45 @@
 /**
  * Modbus broadcast address
  */
-#define MODBUS_BROADCAST              0
+#define MODBUS_BROADCAST                   0
 /**
  * Modbus exception mask
  */
-#define MODBUS_EXCEPTION_MASK         0x80
+#define MODBUS_EXCEPTION_MASK           0x80
 /**
  * Modbus header length
  */
-#define MODBUS_HEADER_LENGTH          2
+#define MODBUS_HEADER_LENGTH               2
 /**
  * Modbus minimal payload length
  */
-#define MODBUS_MIN_PAYLOAD_LENGTH     4
+#define MODBUS_MIN_PAYLOAD_LENGTH          4
 /**
  * Modbus maximal data length
  */
-#define MODBUS_DATA_LENGTH            252
+#define MODBUS_DATA_LENGTH               252
 /**
  * Modbus CRC length
  */
-#define MODBUS_CRC_LENGTH             2
+#define MODBUS_CRC_LENGTH                  2
 
 /**
  * Registers offset
  */
-#define MODBUS_OFFSET_HOLDING               0
-#define MODBUS_OFFSET_INPUT                 0
+#define MODBUS_OFFSET_HOLDING              0
+#define MODBUS_OFFSET_INPUT                0
 
 /**
  * Return exception codes
  */
-#define MODBUS_EXCEPT_INVALID_COMMAND     1
-#define MODBUS_EXCEPT_INVALID_ADDRESS     2
-#define MODBUS_EXCEPT_INVALID_SIZE        3
+#define MODBUS_EXCEPT_INVALID_COMMAND      1
+#define MODBUS_EXCEPT_INVALID_ADDRESS      2
+#define MODBUS_EXCEPT_INVALID_SIZE         3
 
 /**
  * Modbus slave address range
  */
-#define MODBUS_SLAVE_ADDR                22
+#define MODBUS_SLAVE_ADDR                 22
 
 /* Private macros  -----------------------------------------------------------*/
 /* Private typedefs ----------------------------------------------------------*/
@@ -484,5 +484,4 @@ static Status_t MbSlave_CRC16(MbSlave_Frame_t *frame)
 }
 
 /* Private Functions ---------------------------------------------------------*/
-
-/** @} */
+/* ---------------------------------------------------------------------------*/

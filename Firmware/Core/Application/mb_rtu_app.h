@@ -1,21 +1,10 @@
-/**
- * @file       mb_rtu_app.h
- * @version    $(APP_VERSION)
- * @date       $(RELEASE_DATE)
- * @brief      Modbus RTU application implementation
- * @author     jan.bartovsky
+/*
+ * mb_rtu_app.h
  *
- * @copyright  Logic Elements Copyright
- *
- * @defgroup grMbRtuApp Modbus RTU server application
- * @{
- * @brief Application callbacks for Modbus RTU server
- *
- * This module contains callbacks for reading and writing registers.
- *
- * @par Main features:
- *
+ *  Created on: Dec 10, 2024
+ *      Author: Riki
  */
+
 #ifndef MB_RTU_APP_H_
 #define MB_RTU_APP_H_
 
@@ -40,10 +29,10 @@
 
 #define MB_INPUT_FIRST                     0
 
-#define MB_INPUT_A                         0u
-#define MB_INPUT_B                         1u
-#define MB_INPUT_C                         2u
-#define MB_INPUT_D                         3u
+#define MB_STATE                           0u
+#define MB_ERROR                           1u
+#define MB_IN_RES_1                        2u
+#define MB_IN_RES_2                        3u
 
 #define MB_INPUT_LAST                      3
 
@@ -58,12 +47,13 @@
 
 #define MB_HOLD_FIRST                      0
 
-#define MB_HOLD_A                          0u
-#define MB_HOLD_B                          1u
-#define MB_HOLD_C                          2u
-#define MB_HOLD_D                          3u
+#define MB_COMMAND                         0u
+#define MB_TIME_FWD                        1u
+#define MB_SPEED_FWD                       2u
+#define MB_TIME_REW                        3u
+#define MB_SPEED_REW                       4u
 
-#define MB_HOLD_LAST                       3
+#define MB_HOLD_LAST                       4u
 
 /** @} */
 
