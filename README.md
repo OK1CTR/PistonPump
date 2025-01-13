@@ -13,8 +13,8 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 
 | Motor driver pin | MCU pin | MCU function | Comment |
 | --- | --- | --- | --- |
-| 1 | PB8 | TIM1 OC0 | Forward PWM |
-| 2 | PB9 | TIM1 OC1 | Reverse PWM |
+| 1 | PA8 | TIM1 OC1 | Forward PWM |
+| 2 | PA9 | TIM1 OC2 | Reverse PWM |
 | 3 | PB4 |  | Forward Enable |
 | 4 | PB5 |  | Reverse Enable |
 | 5 | reserved | reserved | Forward Current Alarm |

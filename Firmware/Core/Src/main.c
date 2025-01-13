@@ -102,8 +102,12 @@ int main(void)
 
   /* *** */
   HAL_GPIO_WritePin(GPIOB, EN_L_Pin | EN_R_Pin, GPIO_PIN_SET);
-  HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_1);
-  __HAL_TIM_SetCompare(&htim1, 0, 128);
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+  htim1.Instance->CCR1 = 200;
+  htim1.Instance->CCR2 = 0;
+
+  //__HAL_TIM_SetCompare(&htim1, 0, 128);
 
 
   /*
@@ -264,7 +268,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(USB_PULL_GPIO_Port, USB_PULL_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, EN_L_Pin|EN_R_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, EN_R_Pin|EN_L_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : LED_ONBOARD_Pin */
   GPIO_InitStruct.Pin = LED_ONBOARD_Pin;
@@ -273,8 +277,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_ONBOARD_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : USB_PULL_Pin EN_L_Pin EN_R_Pin */
-  GPIO_InitStruct.Pin = USB_PULL_Pin|EN_L_Pin|EN_R_Pin;
+  /*Configure GPIO pins : USB_PULL_Pin EN_R_Pin EN_L_Pin */
+  GPIO_InitStruct.Pin = USB_PULL_Pin|EN_R_Pin|EN_L_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
