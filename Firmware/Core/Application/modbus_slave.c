@@ -5,6 +5,8 @@
  *      Author: Riki
  */
 
+//todo Add a communication timeout.
+
 /* Includes ------------------------------------------------------------------*/
 
 #include <string.h>
@@ -259,9 +261,9 @@ Status_t MbSlave_Handle(void)
     }
     else
     {
-      /* Start next reception */
-      MbSlave_BusReset();
     }
+    /* Start next reception */
+    MbSlave_BusReset();
   }
 
   return ret;

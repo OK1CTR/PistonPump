@@ -25,6 +25,10 @@
 extern TIM_HandleTypeDef PWM_TIMER_INSTANCE;
 
 /* Private variables ---------------------------------------------------------*/
+
+/* Period counter */
+volatile uint32_t period_counter = 0;
+
 /* Functions -----------------------------------------------------------------*/
 
 /* Motor driver initialization */
@@ -35,6 +39,7 @@ void motor_init(void)
   __HAL_TIM_SetCompare(&PWM_TIMER_INSTANCE, TIM_CHANNEL_2, 0);
   HAL_TIM_PWM_Start(&PWM_TIMER_INSTANCE, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&PWM_TIMER_INSTANCE, TIM_CHANNEL_2);
+  __HAL_TIM_ENABLE_IT(&PWM_TIMER_INSTANCE, TIM_IT_UPDATE);
 }
 
 /* Motor driver regular job */
@@ -43,8 +48,17 @@ void motor_job(void)
 }
 
 /* Motor driver initialization */
-void motor_set(int32_t power)
+void motor_set(int32_t power, uint32_t periods)
 {
+  if (periods > 0)
+  {
+    period_counter = periods;
+  }
+  else
+  {
+    period_counter = (uint32_t)-1;  // block the counting
+  }
+
   if (power == 0)
   {
     __HAL_TIM_SetCompare(&PWM_TIMER_INSTANCE, TIM_CHANNEL_1, 0);
@@ -62,6 +76,29 @@ void motor_set(int32_t power)
     __HAL_TIM_SetCompare(&PWM_TIMER_INSTANCE, TIM_CHANNEL_1, 0);
     __HAL_TIM_SetCompare(&PWM_TIMER_INSTANCE, TIM_CHANNEL_2, pwr);
   }
+}
+
+
+/* Driver period counter update */
+void motor_update(void)
+{
+  if (period_counter != (uint32_t)-1)
+  {
+    if (period_counter > 0)
+    {
+      if (--period_counter == 0)
+      {
+        motor_update_callback();
+      }
+    }
+  }
+}
+
+
+/* Driver input data update callback */
+__weak void motor_update_callback(void)
+{
+  motor_set(0, 0);
 }
 
 /* ---------------------------------------------------------------------------*/

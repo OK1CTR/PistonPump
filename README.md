@@ -45,7 +45,8 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 
 ## Modbus communication
 
-The device is set to constant address **22** (0x16).
+- The device is set to constant address **22** (0x16).
+- Supported operations are MB_READ_HOLDING_REGS (3), MB_READ_INPUT_REGS (4) and MB_WRITE_MULTIPLE_REGS (16)
 
 **Input registers:**
 
@@ -67,7 +68,7 @@ The device is set to constant address **22** (0x16).
 
 ## DC Motor control
 
-- PWM resolution is 8 bit (256 steps from 0 to maximum power).
+- PWM resolution is 12 bit (4096 steps from 0 to maximum voltage).
 - PWM frequency is 1 kHz
 (first experiments)
 

@@ -101,7 +101,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   uint32_t tick_cnt = HAL_GetTick() + 1000;
   motor_init();
-  motor_set(-500);
+  motor_set(500, 5000);
 
   while (1)
   {
