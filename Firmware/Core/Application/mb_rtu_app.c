@@ -1,13 +1,14 @@
-/**
- * @file       mb_rtu_app.c
- * @brief      Modbus RTU server implementation
- * @addtogroup grMbRtuApp
- * @{
+/*
+ * mb_rtu_app.h
+ *
+ *  Created on: Dec 10, 2024
+ *      Author: Riki
  */
 
 /* Includes ------------------------------------------------------------------*/
 
 #include "mb_rtu_app.h"
+#include "configuration.h"
 
 /* Private defines -----------------------------------------------------------*/
 /* Private macros  -----------------------------------------------------------*/
@@ -42,17 +43,17 @@ Status_t MbRtu_ReadInputRegCallback(uint16_t address, uint16_t *value)
 
   switch (address)
   {
-    case MB_INPUT_A:
-      *value = 0;  //TODO for first test
+    case MB_STATE:
+      *value = cfg.state;
       break;
-    case MB_INPUT_B:
-      *value = 1;  //TODO for first test
+    case MB_ERROR:
+      *value = cfg.error;
       break;
-    case MB_INPUT_C:
-      *value = 2;  //TODO for first test
+    case MB_IN_RES_1:
+      *value = 0;
       break;
-    case MB_INPUT_D:
-      *value = 3;  //TODO for first test
+    case MB_IN_RES_2:
+      *value = 65535;
       break;
 
     default:
@@ -74,17 +75,20 @@ Status_t MbRtu_ReadHoldingRegCallback(uint16_t address, uint16_t *value)
 
   switch (address)
   {
-    case MB_HOLD_A:
-      *value = 0;  //TODO for first test
+    case MB_COMMAND:
+      *value = cfg.command;
       break;
-    case MB_HOLD_B:
-      *value = 1;  //TODO for first test
+    case MB_TIME_FWD:
+      *value = cfg.forward_time;
       break;
-    case MB_HOLD_C:
-      *value = 2;  //TODO for first test
+    case MB_SPEED_FWD:
+      *value = cfg.forward_speed;
       break;
-    case MB_HOLD_D:
-      *value = 3;  //TODO for first test
+    case MB_TIME_REW:
+      *value = cfg.rewind_time;
+      break;
+    case MB_SPEED_REW:
+      *value = cfg.rewind_speed;
       break;
 
     default:
@@ -103,25 +107,23 @@ Status_t MbRtu_ReadHoldingRegCallback(uint16_t address, uint16_t *value)
 Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
 {
   Status_t ret = STATUS_OK;
-  uint32_t id = 0;
 
   switch (address)
   {
-    case MB_HOLD_A:
-      value;  //TODO do something with value
-      id = 1;  //TODO can be set after register sequence
+    case MB_COMMAND:
+      cfg.command = value;
       break;
-    case MB_HOLD_B:
-      value;  //TODO do something with value
-      id = 1;  //TODO can be set after register sequence
+    case MB_TIME_FWD:
+      cfg.forward_time = value;
       break;
-    case MB_HOLD_C:
-      value;  //TODO do something with value
-      id = 1;  //TODO can be set after register sequence
+    case MB_SPEED_FWD:
+      cfg.forward_speed = value;
       break;
-    case MB_HOLD_D:
-      value;  //TODO do something with value
-      id = 1;  //TODO can be set after register sequence
+    case MB_TIME_REW:
+      cfg.rewind_time = value;
+      break;
+    case MB_SPEED_REW:
+      cfg.rewind_speed = value;
       break;
 
     default:
@@ -129,14 +131,8 @@ Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
       break;
   }
 
-  if (id != 0)
-  {
-    __NOP();  //TODO updated
-  }
-
   return ret;
 }
 
 /* Private Functions ---------------------------------------------------------*/
-
-/** @} */
+/* ---------------------------------------------------------------------------*/

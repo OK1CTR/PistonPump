@@ -1,25 +1,10 @@
-/**
-  * @file       modbus_slave.h
-  * @version    $(APP_VERSION)
-  * @date       $(RELEASE_DATE)
-  * @brief      file_brief
-  * @author
-  *
-  * @copyright  Logic Elements Copyright
-  *
-  * @defgroup gr group_name
-  * @{
-  * @brief group_brief
-  *
-  * This module contains
-  *
-  * @par Main features:
-  *
-  * @par Example
-  * @code
-  *
-  * @endcode
-  */
+/*
+ * modbus_slave.h
+ *
+ *  Created on: Dec 10, 2024
+ *      Author: Riki
+ */
+
 #ifndef MODBUS_SLAVE_H_
 #define MODBUS_SLAVE_H_
 
@@ -71,5 +56,6 @@ Status_t MbSlave_BusReset(void);
  */
 Status_t MbSlave_UpdateSlaveAddress(void);
 
+/* ---------------------------------------------------------------------------*/
+
 #endif /* MODBUS_SLAVE_H_ */
-/** @} */
