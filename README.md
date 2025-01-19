@@ -72,6 +72,11 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 - PWM frequency is 1 kHz
 (first experiments)
 
+## ToDo
+
+- Modbus, debug - communication timeout
+- Modbus - byte oriented incoming message finder
+- Motor driver, debug - filtered request player
 
 ## References
 

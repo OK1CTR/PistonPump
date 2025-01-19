@@ -44,7 +44,7 @@ Status_t MbSlave_Handle(void);
 Status_t MbSlave_SettingsChanged(void);
 
 /**
- * Terminate current transfer and start waiting for next packet header.
+ * Terminate current transfer and start waiting for next packet header
  *
  * @return Status - standard status code (0 - OK)
  */

@@ -26,7 +26,14 @@ typedef struct config
   uint16_t rewind_speed;      ///< motor speed (driver duty factor) for run back
 } config_t;
 
-/* Public variabiles ---------------------------------------------------------*/
+/* List of commands */
+enum commands_e {
+  CMD_NONE = 0,
+  CMD_STEP_FORWARD,
+  CMD_STEP_REWIND
+};
+
+/* Public variables ----------------------------------------------------------*/
 
 /* Configuration, input and output data structure */
 extern config_t cfg;

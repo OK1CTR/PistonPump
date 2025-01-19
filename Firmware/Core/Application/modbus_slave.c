@@ -5,8 +5,6 @@
  *      Author: Riki
  */
 
-//todo Add a communication timeout.
-
 /* Includes ------------------------------------------------------------------*/
 
 #include <string.h>
@@ -60,6 +58,11 @@
  */
 #define MODBUS_SLAVE_ADDR                 22
 
+/**
+ * Modbus frame receive timeout in milliseconds
+ */
+#define MODBUS_RECEIVE_TIMEOUT           100
+
 /* Private macros  -----------------------------------------------------------*/
 /* Private typedefs ----------------------------------------------------------*/
 
@@ -84,6 +87,7 @@ typedef enum
  */
 typedef struct
 {
+  uint32_t timer;
   uint8_t frameOk;
   uint8_t myAddress;
   uint16_t rxPtr;
@@ -208,29 +212,37 @@ Status_t MbSlave_Receive(uint8_t* chunk_data, uint32_t chunk_len)
 
   if (chunk_len <= MODBUS_HEADER_LENGTH + MODBUS_DATA_LENGTH + MODBUS_CRC_LENGTH - mod.rxPtr)
   {
-    /* Chunk is fit into the buffer, insert it and try to process */
+    // on first data insertion set the timer
+    if (mod.rxPtr == 0)
+    {
+      mod.timer = HAL_GetTick() + MODBUS_RECEIVE_TIMEOUT;
+    }
+    // chunk is fit into the buffer, insert it and try to process
     memcpy((uint8_t *)&inFrame + mod.rxPtr, chunk_data, chunk_len);
     mod.rxPtr += chunk_len;
     MbSlave_CheckFrame();
     if (mod.frameOk == 1)
     {
-      /* Notify the waiting task */
+      // stop the receive timer
+      mod.timer = 0;
     }
   }
   else
   {
-    /* Prepare for next reception */
+    // buffer overflow, clean all
     MbSlave_BusReset();
   }
   return ret;
 }
 
 
+/* Terminate current transfer and start waiting for next packet header. */
 Status_t MbSlave_BusReset(void)
 {
   Status_t ret = STATUS_OK;
   mod.rxPtr = 0;
   memset((uint8_t *)&inFrame, 0, MODBUS_HEADER_LENGTH + MODBUS_DATA_LENGTH + MODBUS_CRC_LENGTH);
+  mod.timer = 0;
   return ret;
 }
 
@@ -264,6 +276,16 @@ Status_t MbSlave_Handle(void)
     }
     /* Start next reception */
     MbSlave_BusReset();
+  }
+
+  if (mod.timer > 0)
+  {
+    // receive timeout is running
+    if (TICK_EXPIRED(mod.timer))
+    {
+      // message timeout expired
+      MbSlave_BusReset();
+    }
   }
 
   return ret;

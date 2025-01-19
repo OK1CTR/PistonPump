@@ -1,4 +1,3 @@
-#from pymodbus.client import AsyncModbusSerialClient
 import pymodbus.client as ModbusClient
 
 if __name__ == '__main__':
