@@ -12,6 +12,6 @@
 /* Public varriables ---------------------------------------------------------*/
 
 /* Configuration, input and output data structure */
-config_t cfg;
+config_t cfg = CFG_DEFAULT;
 
 /* ---------------------------------------------------------------------------*/

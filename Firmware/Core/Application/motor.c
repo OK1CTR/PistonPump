@@ -115,6 +115,26 @@ void motor_set_voltage(int16_t voltage)
 }
 
 
+/* Start and stop the motor */
+void motor_control(uint8_t run)
+{
+  mot.running = run;
+}
+
+
+/* Return the motor running state */
+uint8_t is_motor_running(void)
+{
+  return mot.running;
+}
+
+
+/* Return the actual filter length set */
+uint16_t get_filter_length(void)
+{
+  return mot.filter_len;
+}
+
 /* Driver input data update callback */
 __weak int16_t motor_update_callback(void)
 {

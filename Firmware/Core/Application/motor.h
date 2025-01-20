@@ -42,6 +42,24 @@ void motor_irq_handler(void);
 void motor_set_voltage(int16_t voltage);
 
 /**
+ * @brief Start and stop the motor
+ * @param run True to start the motor, False to stop
+ */
+void motor_control(uint8_t run);
+
+/**
+ * @brief Return the motor running state
+ * @return True if motor is running
+ */
+uint8_t is_motor_running(void);
+
+/**
+ * @brief Return the actual filter length set
+ * @return Actual filter length
+ */
+uint16_t get_filter_length(void);
+
+/**
  * @brief Driver period counter update
  */
 void motor_update(void);
@@ -50,7 +68,7 @@ void motor_update(void);
  * @brief Driver input data update callback
  * @return Next sample of motor driver signal
  */
-__weak int16_t motor_update_callback(void);
+int16_t motor_update_callback(void);
 
 /* ---------------------------------------------------------------------------*/
 

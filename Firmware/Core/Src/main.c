@@ -99,7 +99,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  motor_init(1000);
   top_init();
 
   while (1)

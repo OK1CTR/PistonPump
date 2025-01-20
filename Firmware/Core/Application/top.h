@@ -24,6 +24,11 @@ void top_init(void);
  */
 void top_job(void);
 
+/**
+ * @brief Driver input data update callback
+ */
+int16_t motor_update_callback(void);
+
 /* ---------------------------------------------------------------------------*/
 
 #endif /* _TOP_H_ */

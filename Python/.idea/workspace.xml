@@ -5,19 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="034bcae3-c28b-4ffb-9349-a382ecf925a3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SinglePulseTest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/configuration.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/configuration.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/configuration.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/configuration.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/modbus_slave.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/modbus_slave.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/modbus_slave.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/modbus_slave.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/motor.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/motor.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/motor.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/motor.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/top.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/top.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Firmware/Core/Application/top.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Application/top.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Firmware/Core/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Firmware/Core/Src/stm32f1xx_it.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Firmware/Core/Src/stm32f1xx_it.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ModbusFirstTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/ModbusFirstTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SinglePulseTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/SinglePulseTest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,16 +39,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.ModbusFirstTest.executor": "Run",
-    "Python.SinglePulseTest.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "sarah-devel",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.ModbusFirstTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.SinglePulseTest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;sarah-devel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.SinglePulseTest">
     <configuration name="ModbusFirstTest" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Python" />
