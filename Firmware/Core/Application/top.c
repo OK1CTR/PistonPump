@@ -7,6 +7,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 
+#include <string.h>
+
 #include "top.h"
 #include "main.h"
 #include "common.h"
@@ -16,7 +18,18 @@
 /* Private defines -----------------------------------------------------------*/
 
 /* Timetable length */
-#define TIME_TABLE_LEN              4
+#define TIME_TABLE_LEN              8
+
+/* Default timetable contents */
+#define TT_DEFAULT {\
+  { 1000,  150},\
+  { -100,  150},\
+  {    0,  200},\
+  {  300,  150},\
+  {    0,  150},\
+  {    0,    0},\
+  {    0,    0},\
+  {    0,    0}}
 
 /* Private typedefs ----------------------------------------------------------*/
 
@@ -31,9 +44,21 @@ typedef struct
 /* Timetable element definition */
 typedef struct
 {
-  int16_t volt;                    ///< element motor voltage
-  uint16_t time;                   ///< element duration
+  int16_t volt;               ///< element motor voltage
+  uint16_t time;              ///< element duration
 } TtEelem_t;
+
+/* List of commands */
+enum commands_e {
+  CMD_NONE = 0,               ///< no action needed
+  CMD_STEP_FORWARD,           ///< do forward step
+  CMD_STEP_REWIND,            ///< do rewind step
+  CMD_WAVE,                   ///< do programmed wave
+  CMD_CFG_SAVE,               ///< save the configuration to backup and reinitialize system
+  CMD_CFG_LOAD,               ///< load the configuration from backup and reinitialize system
+  CMD_CFG_DEFAULT,            ///< restore configuration to default and reinitialize system
+  CMD_STOP                    ///< emergency motor stop
+};
 
 /* Public variables ----------------------------------------------------------*/
 
@@ -42,6 +67,12 @@ Top_Private_t top;
 
 /* Timetable array */
 TtEelem_t tt[TIME_TABLE_LEN];
+
+/* Programmable pulse buffer */
+TtEelem_t tt_buf[TIME_TABLE_LEN];
+
+/* Default programmable pulse */
+static const TtEelem_t tt_default[TIME_TABLE_LEN] = TT_DEFAULT;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -55,6 +86,11 @@ static void timetable_clear(void);
 /* Initialize the top level module */
 void top_init(void)
 {
+  if (config_load((uint8_t*)tt_buf, sizeof(TtEelem_t) * TIME_TABLE_LEN) != STATUS_OK)
+  {
+    config_set_defaults();
+    memcpy(tt_buf, tt_default, sizeof(TtEelem_t) * TIME_TABLE_LEN);
+  }
   timetable_clear();
   motor_init(cfg.filter_length);
   top.sample_count = 0;
@@ -80,6 +116,7 @@ void top_job(void)
     }
     cfg.command = CMD_NONE;
   }
+
   else if (cfg.command == CMD_STEP_REWIND)
   {
     if (!is_motor_running())
@@ -95,25 +132,50 @@ void top_job(void)
     }
     cfg.command = CMD_NONE;
   }
+
   else if (cfg.command == CMD_WAVE)
   {
     if (!is_motor_running())
     {
-      timetable_clear();
+      memcpy(tt, tt_buf, sizeof(TtEelem_t) * TIME_TABLE_LEN);
       top.tt_ptr = 0;
       top.sample_count = 0;
       motor_control(1);
     }
     cfg.command = CMD_NONE;
   }
-  else if (cfg.command == CMD_CONFIGURE)
+
+  else if (cfg.command == CMD_CFG_SAVE)
   {
     if (!is_motor_running())
     {
+      config_save((uint8_t*)tt_buf, sizeof(TtEelem_t) * TIME_TABLE_LEN);
       motor_init(cfg.filter_length);
     }
     cfg.command = CMD_NONE;
   }
+
+  else if (cfg.command == CMD_CFG_LOAD)
+  {
+    if (!is_motor_running())
+    {
+      config_load((uint8_t*)tt_buf, sizeof(TtEelem_t) * TIME_TABLE_LEN);
+      motor_init(cfg.filter_length);
+    }
+    cfg.command = CMD_NONE;
+  }
+
+  else if (cfg.command == CMD_CFG_DEFAULT)
+  {
+    if (!is_motor_running())
+    {
+      config_set_defaults();
+      memcpy(tt_buf, tt_default, sizeof(TtEelem_t) * TIME_TABLE_LEN);
+      motor_init(cfg.filter_length);
+    }
+    cfg.command = CMD_NONE;
+  }
+
   else if (cfg.command == CMD_STOP)
   {
     motor_control(0);
