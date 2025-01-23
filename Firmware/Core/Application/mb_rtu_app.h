@@ -18,7 +18,17 @@
 /**
  * Return value for registers where read is not permitted
  */
-#define MB_READ_NOT_SUPPORTED             0xFFFF
+#define MB_READ_NOT_SUPPORTED         0xFFFF
+
+/**
+ * Bulk data register count in holding registers space
+ */
+#define MB_HOLDING_BULK_NUM               16
+
+/**
+ * Bulk data address offset in holding registers space
+ */
+#define MB_HOLDING_BULK_OFFSET           100
 
 
 /** @defgroup grMbRegInput
@@ -53,7 +63,7 @@
 #define MB_TIME_REW                        3u
 #define MB_SPEED_REW                       4u
 
-#define MB_HOLD_LAST                       4u
+#define MB_HOLD_LAST                     115u
 
 /** @} */
 

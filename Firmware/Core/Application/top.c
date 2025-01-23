@@ -11,7 +11,6 @@
 
 #include "top.h"
 #include "main.h"
-#include "common.h"
 #include "configuration.h"
 #include "motor.h"
 
@@ -68,10 +67,10 @@ Top_Private_t top;
 /* Timetable array */
 TtEelem_t tt[TIME_TABLE_LEN];
 
-/* Programmable pulse buffer */
+/* Programmable wave buffer */
 TtEelem_t tt_buf[TIME_TABLE_LEN];
 
-/* Default programmable pulse */
+/* Default programmable wave */
 static const TtEelem_t tt_default[TIME_TABLE_LEN] = TT_DEFAULT;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -210,6 +209,37 @@ int16_t motor_update_callback(void)
       return top.sample;
     }
   }
+}
+
+
+/* Read programmable wave buffer item */
+Status_t prog_wave_read(uint16_t address, uint16_t *value)
+{
+  if (address > TIME_TABLE_LEN * 2)
+  {
+    return STATUS_ERROR;
+  }
+  *value = (address % 2) ? tt_buf[address / 2].time : tt_buf[address / 2].volt;
+  return STATUS_OK;
+}
+
+
+/* Write programmable wave buffer item */
+Status_t prog_wave_write(uint16_t address, uint16_t value)
+{
+  if (address > TIME_TABLE_LEN * 2)
+  {
+    return STATUS_ERROR;
+  }
+  if (address % 2)
+  {
+    tt_buf[address / 2].time = value;
+  }
+  else
+  {
+    tt_buf[address / 2].volt = value;
+  }
+  return STATUS_OK;
 }
 
 /* Private functions ---------------------------------------------------------*/

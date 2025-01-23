@@ -415,9 +415,6 @@ static Status_t MbSlave_ProcessFrame(void)
   if (outFrame.funcCode < MODBUS_EXCEPTION_MASK
       && (addr > (offset + size) || (addr) < offset || (addr + count) > (offset + size + 1)))
   {
-#ifdef MODBUS_UPGRADE
-    if (addr < MB_UPGR_BASE_ADDRESS || addr + count > MB_UPGR_END_ADDRESS + 1)
-#endif
     {
       outFrame.funcCode = inFrame.funcCode + MODBUS_EXCEPTION_MASK;
       outFrame.data[0] = MODBUS_EXCEPT_INVALID_ADDRESS; /* invalid address */
