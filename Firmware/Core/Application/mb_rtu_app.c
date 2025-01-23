@@ -9,6 +9,7 @@
 
 #include "mb_rtu_app.h"
 #include "configuration.h"
+#include "top.h"
 
 /* Private defines -----------------------------------------------------------*/
 /* Private macros  -----------------------------------------------------------*/
@@ -73,6 +74,14 @@ Status_t MbRtu_ReadHoldingRegCallback(uint16_t address, uint16_t *value)
 {
   Status_t ret = STATUS_OK;
 
+  // bulk registers
+  if (address >= MB_HOLDING_BULK_OFFSET && address < MB_HOLDING_BULK_OFFSET + MB_HOLDING_BULK_NUM)
+  {
+    ret = prog_wave_read(address - MB_HOLDING_BULK_OFFSET, value);
+    return ret;
+  }
+
+  // standard registers
   switch (address)
   {
     case MB_COMMAND:
@@ -108,6 +117,14 @@ Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
 {
   Status_t ret = STATUS_OK;
 
+  // bulk registers
+  if (address >= MB_HOLDING_BULK_OFFSET && address < MB_HOLDING_BULK_OFFSET + MB_HOLDING_BULK_NUM)
+  {
+    ret = prog_wave_write(address - MB_HOLDING_BULK_OFFSET, value);
+    return ret;
+  }
+
+  // standard registers
   switch (address)
   {
     case MB_COMMAND:

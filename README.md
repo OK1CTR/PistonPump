@@ -65,6 +65,17 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 | 3 | Rewind maximal time (number of PWM cycles) if started by command |
 | 4 | Rewind speed (PWM duty cycle) if started by command |
 
+**Commands**
+
+| Command | Value | Comment |
+| --- | --- | --- |
+| CMD_STEP_FORWARD | 1 | Do forward step                                            |
+| CMD_STEP_REWIND  | 2 | Do rewind step                                             |
+| CMD_WAVE         | 3 | Do programmed wave                                         |
+| CMD_CFG_SAVE     | 4 | Save the configuration to backup and reinitialize system   |
+| CMD_CFG_LOAD     | 5 | Load the configuration from backup and reinitialize system |
+| CMD_CFG_DEFAULT  | 6 | Restore configuration to default and reinitialize system   |
+| CMD_STOP         | 7 | Emergency motor stop                                       |
 
 ## DC Motor control
 
@@ -72,6 +83,10 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 - PWM frequency is 1 kHz
 (first experiments)
 
+## ToDo
+
+- Modbus, debug - communication timeout
+- Modbus - byte oriented incoming message finder
 
 ## References
 

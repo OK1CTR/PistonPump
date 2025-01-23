@@ -99,12 +99,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint32_t tick_cnt = HAL_GetTick() + 1000;
-  motor_init();
-  motor_set(500, 5000);
+  top_init();
 
   while (1)
   {
+    top_job();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
