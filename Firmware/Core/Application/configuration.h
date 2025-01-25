@@ -15,7 +15,7 @@
 /* Defines -------------------------------------------------------------------*/
 
 /* Default register contents */
-#define CFG_DEFAULT {0, 0, 0, 1000, 1000, 1000, 1000, 100}
+#define CFG_DEFAULT {0, 0, 0, 1000, 1000, 1000, 1000, 100, 13, 1100}
 
 /* Typedefs ------------------------------------------------------------------*/
 
@@ -30,6 +30,8 @@ typedef struct config
   uint16_t rewind_time;       ///< maximal time of motor run back
   uint16_t rewind_speed;      ///< motor speed (driver duty factor) for run back
   uint16_t filter_length;     ///< filter motor length, configure to update
+  uint16_t repeat_count;      ///< repeat count of programmable wave
+  uint16_t repeat_period;     ///< programmable wave repeat period in milliseconds
 } config_t;
 
 /* Public variables ----------------------------------------------------------*/

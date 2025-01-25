@@ -99,7 +99,12 @@ Status_t MbRtu_ReadHoldingRegCallback(uint16_t address, uint16_t *value)
     case MB_SPEED_REW:
       *value = cfg.rewind_speed;
       break;
-
+    case MB_REPEAT_CNT:
+      *value = cfg.repeat_count;
+      break;
+    case MB_REPEAT_PERIOD:
+      *value = cfg.repeat_period;
+      break;
     default:
       *value = MB_READ_NOT_SUPPORTED;
       ret = STATUS_ERROR;
@@ -142,7 +147,12 @@ Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
     case MB_SPEED_REW:
       cfg.rewind_speed = value;
       break;
-
+    case MB_REPEAT_CNT:
+      cfg.repeat_count = value;
+      break;
+    case MB_REPEAT_PERIOD:
+      cfg.repeat_period = value;
+      break;
     default:
       ret = STATUS_ERROR;
       break;
