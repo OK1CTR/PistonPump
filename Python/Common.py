@@ -10,3 +10,6 @@ CMD_CFG_LOAD = 5               # load the configuration from backup and reinitia
 CMD_CFG_DEFAULT = 6            # restore configuration to default and reinitialize system
 CMD_STOP = 7                   # emergency motor stop
 CMD_REPEAT = 8                 # repeat the programmable wave
+
+# Holding registers address
+ADR_COMMAND = 0                # command register

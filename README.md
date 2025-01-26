@@ -2,6 +2,12 @@
 
 Simple electronic control unit for an experimental piston pump. The DC motor speed is set as a function of time over the USB interface and simulated ModBus protocol. The STM32F103 microcontroller is used on cheap widely available board called ,,Blue Pill''.
 
+**Version history**
+
+| Version | Comment | Date |
+| --- | --- | --- |
+| V-1.0.1 | First full hardware test | 24.01.25 |
+
 ## Hardware
 
 - STM32F103C8T6 board ,,Blue Pill''
