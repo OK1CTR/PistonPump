@@ -7,6 +7,8 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 | Version | Comment | Date |
 | --- | --- | --- |
 | V-1.0.1 | First full hardware test | 24.01.25 |
+| V-1.0.2 | Hardware setup for Visitors day | 26.01.25 |
+
 
 ## Hardware
 
