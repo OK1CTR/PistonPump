@@ -1,9 +1,11 @@
 ~*
 __pycache__
 [Ll]og
+.idea
 
 Firmware/Debug
 Firmware/Release
 Firmware/.settings/language.settings.xml
 Firmware/*.launch
-s
+
+Python/configuration.json

@@ -62,8 +62,9 @@
 #define MB_SPEED_FWD                       2u
 #define MB_TIME_REW                        3u
 #define MB_SPEED_REW                       4u
-#define MB_REPEAT_CNT                      5u
-#define MB_REPEAT_PERIOD                   6u
+#define MB_FILTER_LENGTH                   5u
+#define MB_REPEAT_CNT                      6u
+#define MB_REPEAT_PERIOD                   7u
 
 #define MB_HOLD_LAST                     115u
 

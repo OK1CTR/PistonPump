@@ -1,14 +1,31 @@
-import pymodbus.client as ModbusClient
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+
+"""
+Test of programmable wave
+"""
+
+__author__ = "Richard Linhart"
+__copyright__ = ""
+__credits__ = [""]
+__license__ = "GPL"
+__version__ = "1.0.0"
+__maintainer__ = "Richard Linhart"
+__email__ = "OK1CTR@gmail.com"
+__status__ = "Development"
+
 from time import sleep
 from Common import *
+from MbPistonPump import *
+import sys
+
 
 if __name__ == '__main__':
+    pp = MbPistonPump()
+    pp.open()
+    pp.set(REG_REPEAT, [3, 2000])  # count, period
 
-    # Create Modbus client
-    client = ModbusClient.ModbusSerialClient(port="COM3", stopbits=1, bytesize=8, parity='N', baudrate=115200)
-    if not client.connect():
-        exit('Connection failed')
+    # pp.command(CMD_WAVE)
+    pp.command(CMD_REPEAT)
 
-    # Send wave
-    result_ = client.write_registers(address=0, values=[CMD_WAVE], slave=modbus_slave_addr)
-    print(f'Write Holding Regs: {result_}')
+    sys.exit(0)
