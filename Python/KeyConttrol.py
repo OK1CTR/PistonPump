@@ -1,51 +1,69 @@
-import sys
-import pymodbus.client as ModbusClient
-from Common import *
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 
+"""
+User friendly control by pressing keys.
+"""
+
+__author__ = "Richard Linhart"
+__copyright__ = ""
+__credits__ = [""]
+__license__ = "GPL"
+__version__ = "1.0.0"
+__maintainer__ = "Richard Linhart"
+__email__ = "OK1CTR@gmail.com"
+__status__ = "Development"
+
+from Common import *
+from MbPistonPump import *
+import sys
 import keyboard
 
-if __name__ == '__main__':
 
-    # Create Modbus client
-    client = ModbusClient.ModbusSerialClient(port="COM3", stopbits=1, bytesize=8, parity='N', baudrate=115200)
-    if not client.connect():
-        exit('Connection failed')
+if __name__ == '__main__':
+    pp = MbPistonPump()
+    pp.open()
+    pulse_speed = 500
 
     while True:
         a = keyboard.read_key()
-        if a == '\\':  # Send wave
-            result_ = client.write_registers(address=0, values=[CMD_WAVE], slave=modbus_slave_addr)
-            print(f'Write Holding Regs: {result_}')
+        if a == 't':  # Send wave
+            pp.command(CMD_WAVE)
             continue
 
-        elif a == 'c':  # pulse forward
-            result_ = client.write_registers(address=0, values=[CMD_STEP_FORWARD], slave=modbus_slave_addr)
-            print(f'Write Holding Regs: {result_}')
+        elif a =='r':  # repeated wave
+            pp.command(CMD_REPEAT)
             continue
 
-        elif a =='x':  # pulse back
-            result_ = client.write_registers(address=0, values=[CMD_STEP_REWIND], slave=modbus_slave_addr)
-            print(f'Write Holding Regs: {result_}')
+        elif a == 'p':  # pulse forward
+            pp.set(REG_FORWARD, [500, pulse_speed])  # time, speed
+            pp.command(CMD_STEP_FORWARD)
             continue
 
-        elif a =='0':  # emergency stop
-            result_ = client.write_registers(address=0, values=[CMD_STOP], slave=modbus_slave_addr)
-            print(f'Write Holding Regs: {result_}')
+        elif a =='o':  # pulse back
+            pp.set(REG_REWIND, [500, pulse_speed])  # time, speed
+            pp.command(CMD_STEP_REWIND)
             continue
 
-        elif a =='1':  # emergency stop
-            result_ = client.write_registers(address=1, values=[1000, 250, 1000, 250], slave=modbus_slave_addr)
-            print(f'Write Holding Regs: {result_}')
+        elif a =='u':  # return after repeat
+            pp.set(REG_FORWARD, [2500, 1000])  # time, speed
+            pp.command(CMD_STEP_FORWARD)
             continue
 
-        elif a =='2':  # emergency stop
-            result_ = client.write_registers(address=1, values=[1000, 500, 1000, 500], slave=modbus_slave_addr)
-            print(f'Write Holding Regs: {result_}')
+        elif a =='x':  # emergency stop
+            pp.command(CMD_STOP)
             continue
 
-        elif a =='3':  # emergency stop
-            result_ = client.write_registers(address=1, values=[1000, 1000, 1000, 1000], slave=modbus_slave_addr)
-            print(f'Write Holding Regs: {result_}')
+        elif a =='b':  # set slow
+            pulse_speed = 300
+            continue
+
+        elif a =='n':  # set medium
+            pulse_speed = 500
+            continue
+
+        elif a =='m':  # set fast
+            pulse_speed = 1000
             continue
 
         elif a == 'q':  # Quit

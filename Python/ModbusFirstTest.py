@@ -1,3 +1,21 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+
+"""
+First testo of Modbus operations with new library version
+"""
+
+__author__ = "Richard Linhart"
+__copyright__ = ""
+__credits__ = [""]
+__license__ = "GPL"
+__version__ = "1.0.0"
+__maintainer__ = "Richard Linhart"
+__email__ = "OK1CTR@gmail.com"
+__status__ = "Development"
+
+import sys
+
 import pymodbus.client as ModbusClient
 
 if __name__ == '__main__':
@@ -25,3 +43,4 @@ if __name__ == '__main__':
 
     # close client
     client.close()
+    sys.exit(0)

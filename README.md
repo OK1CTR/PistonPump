@@ -2,6 +2,14 @@
 
 Simple electronic control unit for an experimental piston pump. The DC motor speed is set as a function of time over the USB interface and simulated ModBus protocol. The STM32F103 microcontroller is used on cheap widely available board called ,,Blue Pill''.
 
+**Version history**
+
+| Version | Comment | Date |
+| --- | --- | --- |
+| V-1.0.1 | First full hardware test | 24.01.25 |
+| V-1.0.2 | Hardware setup for Visitors day | 26.01.25 |
+
+
 ## Hardware
 
 - STM32F103C8T6 board ,,Blue Pill''
@@ -64,6 +72,9 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 | 2 | Forward speed (PWM duty cycle) if started by command |
 | 3 | Rewind maximal time (number of PWM cycles) if started by command |
 | 4 | Rewind speed (PWM duty cycle) if started by command |
+| 5 | Programmable wave repeat count, for command CMD_REPEAT |
+| 6 | Programmable wave repeat period in milliseconds, for command CMD_REPEAT |
+
 
 **Commands**
 
@@ -76,6 +87,7 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 | CMD_CFG_LOAD     | 5 | Load the configuration from backup and reinitialize system |
 | CMD_CFG_DEFAULT  | 6 | Restore configuration to default and reinitialize system   |
 | CMD_STOP         | 7 | Emergency motor stop                                       |
+| CMD_REPEAT       | 8 | Repeat programmable way by defined period and count        |
 
 ## DC Motor control
 

@@ -21,10 +21,10 @@
 
 /* Default timetable contents */
 #define TT_DEFAULT {\
-  { 1000,  150},\
-  { -100,  150},\
+  {-1000,  150},\
+  {  100,  150},\
   {    0,  200},\
-  {  300,  150},\
+  { -300,  150},\
   {    0,  150},\
   {    0,    0},\
   {    0,    0},\
@@ -36,8 +36,10 @@
 typedef struct
 {
   uint32_t sample_count;
+  uint32_t repeat_tmr;
   int16_t sample;
   uint8_t tt_ptr;
+  uint8_t repeat_count;
 } Top_Private_t;
 
 /* Timetable element definition */
@@ -56,7 +58,8 @@ enum commands_e {
   CMD_CFG_SAVE,               ///< save the configuration to backup and reinitialize system
   CMD_CFG_LOAD,               ///< load the configuration from backup and reinitialize system
   CMD_CFG_DEFAULT,            ///< restore configuration to default and reinitialize system
-  CMD_STOP                    ///< emergency motor stop
+  CMD_STOP,                   ///< emergency motor stop
+  CMD_REPEAT                  ///< repeat programmable wave
 };
 
 /* Public variables ----------------------------------------------------------*/
@@ -94,15 +97,39 @@ void top_init(void)
   motor_init(cfg.filter_length);
   top.sample_count = 0;
   top.tt_ptr = 0;
+  top.repeat_count = 0;
+  top.repeat_tmr = 0;
 }
 
 
 /* Top level module regular job */
 void top_job(void)
 {
-  if (cfg.command == CMD_STEP_FORWARD)
+  uint16_t command;
+  // timed event handling
+  if (cfg.command == CMD_NONE)
   {
-    if (!is_motor_running())
+    if (top.repeat_count > 0 && TICK_EXPIRED(top.repeat_tmr))
+    {
+      top.repeat_count--;
+      top.repeat_tmr = HAL_GetTick() + cfg.repeat_period;
+      command = CMD_WAVE;
+    }
+    else
+    {
+      return;  // don't forget!
+    }
+  }
+  else
+  {
+    command = cfg.command;
+    cfg.command = CMD_NONE;
+  }
+
+  // command handling
+  if (command == CMD_STEP_FORWARD)
+  {
+    if (!is_motor_running() && top.repeat_count == 0)
     {
       timetable_clear();
       tt[0].time = cfg.forward_time;
@@ -113,12 +140,11 @@ void top_job(void)
       top.sample_count = 0;
       motor_control(1);
     }
-    cfg.command = CMD_NONE;
   }
 
-  else if (cfg.command == CMD_STEP_REWIND)
+  else if (command == CMD_STEP_REWIND)
   {
-    if (!is_motor_running())
+    if (!is_motor_running() && top.repeat_count == 0)
     {
       timetable_clear();
       tt[0].time = cfg.rewind_time;
@@ -129,10 +155,9 @@ void top_job(void)
       top.sample_count = 0;
       motor_control(1);
     }
-    cfg.command = CMD_NONE;
   }
 
-  else if (cfg.command == CMD_WAVE)
+  else if (command == CMD_WAVE)
   {
     if (!is_motor_running())
     {
@@ -141,44 +166,50 @@ void top_job(void)
       top.sample_count = 0;
       motor_control(1);
     }
-    cfg.command = CMD_NONE;
   }
 
-  else if (cfg.command == CMD_CFG_SAVE)
+  else if (command == CMD_CFG_SAVE)
   {
-    if (!is_motor_running())
+    if (!is_motor_running() && top.repeat_count == 0)
     {
       config_save((uint8_t*)tt_buf, sizeof(TtEelem_t) * TIME_TABLE_LEN);
       motor_init(cfg.filter_length);
     }
-    cfg.command = CMD_NONE;
   }
 
-  else if (cfg.command == CMD_CFG_LOAD)
+  else if (command == CMD_CFG_LOAD)
   {
-    if (!is_motor_running())
+    if (!is_motor_running() && top.repeat_count == 0)
     {
       config_load((uint8_t*)tt_buf, sizeof(TtEelem_t) * TIME_TABLE_LEN);
       motor_init(cfg.filter_length);
     }
-    cfg.command = CMD_NONE;
   }
 
-  else if (cfg.command == CMD_CFG_DEFAULT)
+  else if (command == CMD_CFG_DEFAULT)
   {
-    if (!is_motor_running())
+    if (!is_motor_running() && top.repeat_count == 0)
     {
       config_set_defaults();
       memcpy(tt_buf, tt_default, sizeof(TtEelem_t) * TIME_TABLE_LEN);
       motor_init(cfg.filter_length);
     }
-    cfg.command = CMD_NONE;
   }
 
-  else if (cfg.command == CMD_STOP)
+  else if (command == CMD_STOP)
   {
     motor_control(0);
-    cfg.command = CMD_NONE;
+    top.repeat_count = 0;
+    top.repeat_tmr = 0;
+  }
+
+  else if (command == CMD_REPEAT)
+  {
+    if (!is_motor_running() && top.repeat_count == 0)
+    {
+      top.repeat_count = cfg.repeat_count;
+      top.repeat_tmr = 0;
+    }
   }
 }
 

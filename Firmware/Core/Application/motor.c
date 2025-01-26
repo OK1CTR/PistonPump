@@ -119,6 +119,7 @@ void motor_set_voltage(int16_t voltage)
 void motor_control(uint8_t run)
 {
   mot.running = run;
+  HAL_GPIO_WritePin(LED_ONBOARD_GPIO_Port, LED_ONBOARD_Pin, (run) ? GPIO_PIN_RESET : GPIO_PIN_SET);
 }
 
 
