@@ -1,25 +1,28 @@
-/*
- * top.c
+/**
+ * @file       app.c
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      Top level application module
  *
- *  Created on: Dec 10, 2024
- *      Author: Riki
+ * @addtogroup grApp
+ * @{
  */
 
 /* Includes ------------------------------------------------------------------*/
 
 #include <string.h>
 
-#include "top.h"
+#include "app.h"
 #include "main.h"
 #include "configuration.h"
 #include "motor.h"
 
 /* Private defines -----------------------------------------------------------*/
 
-/* Timetable length */
+/*! Timetable length */
 #define TIME_TABLE_LEN              8
 
-/* Default timetable contents */
+/*! Default timetable contents */
 #define TT_DEFAULT {\
   {-1000,  150},\
   {  100,  150},\
@@ -32,7 +35,7 @@
 
 /* Private typedefs ----------------------------------------------------------*/
 
-/* Definition of all private variables except timetable */
+/*! Definition of all private variables except timetable */
 typedef struct
 {
   uint32_t sample_count;
@@ -42,14 +45,14 @@ typedef struct
   uint8_t repeat_count;
 } Top_Private_t;
 
-/* Timetable element definition */
+/*! Timetable element definition */
 typedef struct
 {
   int16_t volt;               ///< element motor voltage
   uint16_t time;              ///< element duration
 } TtEelem_t;
 
-/* List of commands */
+/*! List of commands */
 enum commands_e {
   CMD_NONE = 0,               ///< no action needed
   CMD_STEP_FORWARD,           ///< do forward step
@@ -64,16 +67,16 @@ enum commands_e {
 
 /* Public variables ----------------------------------------------------------*/
 
-/* All private variables except timetable */
+/*! All private variables except timetable */
 Top_Private_t top;
 
-/* Timetable array */
+/*! Timetable array */
 TtEelem_t tt[TIME_TABLE_LEN];
 
-/* Programmable wave buffer */
+/*! Programmable wave buffer */
 TtEelem_t tt_buf[TIME_TABLE_LEN];
 
-/* Default programmable wave */
+/*! Default programmable wave */
 static const TtEelem_t tt_default[TIME_TABLE_LEN] = TT_DEFAULT;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -287,3 +290,5 @@ static void timetable_clear(void)
 }
 
 /* ---------------------------------------------------------------------------*/
+
+/** @} */

@@ -1,26 +1,27 @@
-/*
- * mb_rtu_app.h
+/**
+ * @file       mb_rtu_app.c
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      Modbus RTU server module
  *
- *  Created on: Dec 10, 2024
- *      Author: Riki
+ * @addtogroup grModServer
+ * @{
  */
 
 /* Includes ------------------------------------------------------------------*/
 
 #include "mb_rtu_app.h"
 #include "configuration.h"
-#include "top.h"
+#include "app.h"
 
 /* Private defines -----------------------------------------------------------*/
 /* Private macros  -----------------------------------------------------------*/
 /* Private typedefs ----------------------------------------------------------*/
 
-/**
- * Declaration of all private variables
- */
+/*! Declaration of all private variables */
 typedef struct
 {
-}MbRtu_Private_t;
+} MbRtu_Private_t;
 
 /* Private constants ---------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -34,7 +35,6 @@ static MbRtu_Private_t mb;
 /* Public variables ----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Functions -----------------------------------------------------------------*/
-
 
 Status_t MbRtu_ReadInputRegCallback(uint16_t address, uint16_t *value)
 {
@@ -63,7 +63,7 @@ Status_t MbRtu_ReadInputRegCallback(uint16_t address, uint16_t *value)
       break;
   }
 
-  /* Reverse byte order */
+  // reverse byte order
   *value = __REV16(*value);
 
   return ret;
@@ -114,7 +114,7 @@ Status_t MbRtu_ReadHoldingRegCallback(uint16_t address, uint16_t *value)
       break;
   }
 
-  /* Reverse byte order */
+  // reverse byte order
   *value = __REV16(*value);
 
   return ret;
@@ -169,3 +169,5 @@ Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
 
 /* Private Functions ---------------------------------------------------------*/
 /* ---------------------------------------------------------------------------*/
+
+/** @} */
