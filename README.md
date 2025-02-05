@@ -1,14 +1,14 @@
 # PistonPump
 
-Simple electronic control unit for an experimental piston pump. The DC motor speed is set as a function of time over the USB interface and simulated ModBus protocol. The STM32F103 microcontroller is used on cheap widely available board called ,,Blue Pill''.
+Simple and quick-built electronic control unit for a screw actuator moving a piston to pump a liquid in a physical experimental setup. The piston movement speed is roughly proportional to the DC  voltage applied to the motor, thus to the duty cycle of the motor driving signal. The speed, as a function of time is defined by table in microcontroller memory and interpolated using a digital filter. A default table is stored in ROM, and user defined one can be set over the USB interface, where a standard Modbus protocol is simulated. The unit itself is controlled by commands over the Modbus. An user or a superior system can use commands to "play" the defined function or move the piston any direction or speed, as well as brake it if needed. The STM32F103 microcontroller is used on cheap widely available board called ,,Blue Pill''.
 
 **Version history**
 
 | Version | Comment | Date |
 | --- | --- | --- |
-| V-1.0.1 | First full hardware test | 24.01.25 |
-| V-1.0.2 | Hardware setup for Visitors day | 26.01.25 |
-
+| VER-1.0.3 | Improved folder structure and documentation | 05.02.25 |
+| VER-1.0.2 | Hardware setup for Visitors day | 26.01.25 |
+| VER-1.0.1 | First full hardware test | 24.01.25 |
 
 ## Hardware
 
@@ -42,9 +42,9 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 
 | Interrupt | Priority |
 | --- | --- |
-| USB |  |
-| Systick |  |
-| TIM1 |  |
+| USB | 0 |
+| Systick | 0 |
+| TIM1 | 0 |
 
 **Miscellaneous parameters**
 
@@ -58,23 +58,22 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 
 **Input registers:**
 
-| Address | Priority |
+| Address | Function |
 | --- | --- |
-| 0 | System status flag field |
-| 1 | System error flag field |
+| 0 | System status flag field (reserved) |
+| 1 | System error flag field (reserved) |
 
 **Holding registers:**
 
-| Address | Priority |
-| --- | --- |
-| 0 | Command |
-| 1 | Forward maximal time (number of PWM cycles) if started by command |
-| 2 | Forward speed (PWM duty cycle) if started by command |
-| 3 | Rewind maximal time (number of PWM cycles) if started by command |
-| 4 | Rewind speed (PWM duty cycle) if started by command |
-| 5 | Programmable wave repeat count, for command CMD_REPEAT |
-| 6 | Programmable wave repeat period in milliseconds, for command CMD_REPEAT |
-
+| Address | Min | Max | Default | Function |
+| --- | --- | --- | --- | --- |
+| 0 |   |       |      | Command |
+| 1 | 0 | 65535 | 1000 | Forward maximal time (number of PWM cycles) if started by command |
+| 2 | 0 |  1000 | 1000 | Forward speed (PWM duty cycle) if started by command |
+| 3 | 0 | 65535 | 1000 | Rewind maximal time (number of PWM cycles) if started by command |
+| 4 | 0 |  1000 | 1000 | Rewind speed (PWM duty cycle) if started by command |
+| 5 | 0 |    16 |   13 | Programmable wave repeat count, for command CMD_REPEAT |
+| 6 | 0 | 65535 | 1100 | Programmable wave repeat period in milliseconds, for command CMD_REPEAT |
 
 **Commands**
 
@@ -93,12 +92,16 @@ Simple electronic control unit for an experimental piston pump. The DC motor spe
 
 - PWM resolution is 12 bit (4096 steps from 0 to maximum voltage).
 - PWM frequency is 1 kHz
-(first experiments)
+
+## Additional SW
+
+The project folder Python contains various scripts for testing firmware functionalities or control the machine directly, as well as a module for easy building new scripts.
 
 ## ToDo
 
-- Modbus, debug - communication timeout
-- Modbus - byte oriented incoming message finder
+- Modbus - test special conditions
+- Utilize status and error registers
+- Change keyboard event handling library to avoid need of superuser rights in Linux
 
 ## References
 

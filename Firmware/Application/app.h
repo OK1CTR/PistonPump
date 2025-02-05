@@ -1,12 +1,15 @@
-/*
- * top.h
+/**
+ * @file       app.h
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      Top level application module
  *
- *  Created on: Dec 10, 2024
- *      Author: Riki
+ * @addtogroup grApp
+ * @{
  */
 
-#ifndef _TOP_H_
-#define _TOP_H_
+#ifndef _APP_H_
+#define _APP_H_
 
 /* Includes ------------------------------------------------------------------*/
 
@@ -50,4 +53,6 @@ Status_t prog_wave_write(uint16_t address, uint16_t value);
 
 /* ---------------------------------------------------------------------------*/
 
-#endif /* _TOP_H_ */
+#endif /* _APP_H_ */
+
+/** @} */

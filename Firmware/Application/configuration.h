@@ -1,8 +1,11 @@
-/*
- * configuration.h
+/**
+ * @file       configuration.c
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      Application configuration module
  *
- *  Created on: Jan 11, 2025
- *      Author: Riki
+ * @addtogroup grConfig
+ * @{
  */
 
 #ifndef _CONFIGURATION_H_
@@ -14,8 +17,13 @@
 
 /* Defines -------------------------------------------------------------------*/
 
-/* Default register contents */
+/*! Default register contents */
 #define CFG_DEFAULT {0, 0, 0, 1000, 1000, 1000, 1000, 100, 13, 1100}
+
+/*! Speed maximal limit */
+#define CFG_SPEED_MAX         1000
+/*! Wave repeat count maximal limit */
+#define CFG_REPEAT_CNT_MAX      16
 
 /* Typedefs ------------------------------------------------------------------*/
 
@@ -64,3 +72,5 @@ uint8_t config_load(uint8_t *user_data, uint8_t user_size);
 /* ---------------------------------------------------------------------------*/
 
 #endif /* _CONFIGURATION_H_ */
+
+/** @} */

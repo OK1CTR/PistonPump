@@ -1,8 +1,11 @@
-/*
- * motor.h
+/**
+ * @file       motor.h
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      DC motor PWM bridge control module
  *
- *  Created on: Jan 14, 2025
- *      Author: Riki
+ * @addtogroup grMotor
+ * @{
  */
 
 #ifndef _MOTOR_H_
@@ -14,7 +17,7 @@
 
 /* Defines -------------------------------------------------------------------*/
 
-/* Maximal driver output voltage equivalent */
+/*! Maximal driver output voltage equivalent */
 #define MOT_VOLT_MAX                      1000
 
 /* Functions -----------------------------------------------------------------*/
@@ -72,4 +75,6 @@ int16_t motor_update_callback(void);
 
 /* ---------------------------------------------------------------------------*/
 
-#endif /* _H_ */
+#endif /* _MOTOR_H_ */
+
+/** @} */

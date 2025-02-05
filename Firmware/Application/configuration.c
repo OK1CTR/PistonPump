@@ -1,8 +1,11 @@
-/*
- * configuration.c
+/**
+ * @file       configuration.c
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      Application configuration module
  *
- *  Created on: Jan 11, 2025
- *      Author: Riki
+ * @addtogroup grConfig
+ * @{
  */
 
 /* Includes ------------------------------------------------------------------*/
@@ -11,12 +14,12 @@
 
 #include "configuration.h"
 
-/* Public variables ----------------------------------------------------------*/
+/* Exported variables --------------------------------------------------------*/
 
-/* Default configuration structure */
+/*! Default configuration structure */
 static const config_t cfg_default = CFG_DEFAULT;
 
-/* Configuration, input and output data structure */
+/*! Configuration, input and output data structure */
 config_t cfg;
 
 /* Functions -----------------------------------------------------------------*/
@@ -31,13 +34,17 @@ void config_set_defaults(void)
 /* Save configuration to backup */
 void config_save(uint8_t *user_data, uint8_t user_size)
 {
+  // TODO
 }
 
 
 /* Load configuration from backup */
 uint8_t config_load(uint8_t *user_data, uint8_t user_size)
 {
+  // TODO
   return STATUS_ERROR;
 }
 
 /* ---------------------------------------------------------------------------*/
+
+/** @} */

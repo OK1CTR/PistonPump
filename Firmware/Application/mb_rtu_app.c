@@ -1,26 +1,27 @@
-/*
- * mb_rtu_app.h
+/**
+ * @file       mb_rtu_app.c
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      Modbus RTU server module
  *
- *  Created on: Dec 10, 2024
- *      Author: Riki
+ * @addtogroup grModServer
+ * @{
  */
 
 /* Includes ------------------------------------------------------------------*/
 
 #include "mb_rtu_app.h"
 #include "configuration.h"
-#include "top.h"
+#include "app.h"
 
 /* Private defines -----------------------------------------------------------*/
 /* Private macros  -----------------------------------------------------------*/
 /* Private typedefs ----------------------------------------------------------*/
 
-/**
- * Declaration of all private variables
- */
+/*! Declaration of all private variables */
 typedef struct
 {
-}MbRtu_Private_t;
+} MbRtu_Private_t;
 
 /* Private constants ---------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -34,7 +35,6 @@ static MbRtu_Private_t mb;
 /* Public variables ----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Functions -----------------------------------------------------------------*/
-
 
 Status_t MbRtu_ReadInputRegCallback(uint16_t address, uint16_t *value)
 {
@@ -63,7 +63,7 @@ Status_t MbRtu_ReadInputRegCallback(uint16_t address, uint16_t *value)
       break;
   }
 
-  /* Reverse byte order */
+  // reverse byte order
   *value = __REV16(*value);
 
   return ret;
@@ -114,12 +114,16 @@ Status_t MbRtu_ReadHoldingRegCallback(uint16_t address, uint16_t *value)
       break;
   }
 
-  /* Reverse byte order */
+  // reverse byte order
   *value = __REV16(*value);
 
   return ret;
 }
 
+/*! Test upper value limit */
+#define TEST_MAX(dest, src, lim) if (src <= lim) (dest) = (src); else ret = STATUS_ERROR;
+/*! Test lower value limit */
+#define TEST_MIN(dest, src, lim) if (src >= lim) (dest) = (src); else ret = STATUS_ERROR;
 
 Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
 {
@@ -142,19 +146,19 @@ Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
       cfg.forward_time = value;
       break;
     case MB_SPEED_FWD:
-      cfg.forward_speed = value;
+      TEST_MAX(cfg.forward_speed, value, CFG_SPEED_MAX)
       break;
     case MB_TIME_REW:
       cfg.rewind_time = value;
       break;
     case MB_SPEED_REW:
-      cfg.rewind_speed = value;
+      TEST_MAX(cfg.rewind_speed, value, CFG_SPEED_MAX)
       break;
     case MB_FILTER_LENGTH:
       cfg.filter_length = value;
       break;
     case MB_REPEAT_CNT:
-      cfg.repeat_count = value;
+      TEST_MAX(cfg.repeat_count, value, CFG_REPEAT_CNT_MAX)
       break;
     case MB_REPEAT_PERIOD:
       cfg.repeat_period = value;
@@ -169,3 +173,5 @@ Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
 
 /* Private Functions ---------------------------------------------------------*/
 /* ---------------------------------------------------------------------------*/
+
+/** @} */
