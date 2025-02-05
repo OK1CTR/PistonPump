@@ -17,7 +17,7 @@ Simple and quick-built electronic control unit for a screw actuator moving a pis
 
 ![HW-039 schematics](Documents/hw_039_schematics.png "The schematic diagram of the motor driver")
 
-**The motor driver to MCU connection:**
+**The motor driver to MCU connection**
 
 | Motor driver pin | MCU pin | MCU function | Comment |
 | --- | --- | --- | --- |
@@ -56,14 +56,14 @@ Simple and quick-built electronic control unit for a screw actuator moving a pis
 - The device is set to constant address **22** (0x16).
 - Supported operations are MB_READ_HOLDING_REGS (3), MB_READ_INPUT_REGS (4) and MB_WRITE_MULTIPLE_REGS (16)
 
-**Input registers:**
+**Input registers**
 
 | Address | Function |
 | --- | --- |
 | 0 | System status flag field (reserved) |
 | 1 | System error flag field (reserved) |
 
-**Holding registers:**
+**Holding registers**
 
 | Address | Min | Max | Default | Function |
 | --- | --- | --- | --- | --- |
@@ -74,6 +74,27 @@ Simple and quick-built electronic control unit for a screw actuator moving a pis
 | 4 | 0 |  1000 | 1000 | Rewind speed (PWM duty cycle) if started by command |
 | 5 | 0 |    16 |   13 | Programmable wave repeat count, for command CMD_REPEAT |
 | 6 | 0 | 65535 | 1100 | Programmable wave repeat period in milliseconds, for command CMD_REPEAT |
+
+**Holding registers for programmable wave data**
+
+Programmable wave table has 8 positions to define steps by motor speed and time of run. It occupied 16 registers from base address 100. Example of first step is shown here:
+
+| Address | Min | Max | Function |
+| --- | --- | --- | --- |
+| 100 |  0    | 65535 | 1st step time |
+| 101 | -1000 |  1000 | 1st step speed |
+
+Step time means the number of PWM cycles. Speed is the PWM duty cycle, while the sign determines the direction, positive is forward, negative is rewind. Zero step time is interpreted as end of wave data. Changing direction for a short time after motor run can be used as a brake.
+
+The default programmable wave function is this:
+
+| Speed | Time |
+| --- | --- |
+| -1000 | 150 |
+|   100 | 150 |
+|     0 | 200 |
+|  -300 | 150 |
+|     0 | 150 |
 
 **Commands**
 
@@ -97,11 +118,12 @@ Simple and quick-built electronic control unit for a screw actuator moving a pis
 
 The project folder Python contains various scripts for testing firmware functionalities or control the machine directly, as well as a module for easy building new scripts.
 
-## ToDo
+## ToDo + Wishlist
 
 - Modbus - test special conditions
 - Utilize status and error registers
 - Change keyboard event handling library to avoid need of superuser rights in Linux
+- Support of hardware user interface controller
 
 ## References
 
