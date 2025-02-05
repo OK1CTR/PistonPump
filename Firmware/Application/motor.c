@@ -1,8 +1,11 @@
-/*
- * motor.c
+/**
+ * @file       motor.c
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      DC motor PWM bridge control module
  *
- *  Created on: Jan 14, 2025
- *      Author: Riki
+ * @addtogroup grMotor
+ * @{
  */
 
 /* Includes ------------------------------------------------------------------*/
@@ -14,16 +17,16 @@
 
 /* Private defines -----------------------------------------------------------*/
 
-/* PWM timer instance */
+/*! PWM timer instance */
 #define PWM_TIMER_INSTANCE        htim1
-/* Maximal state in the PWM timer&counter */
+/*! Maximal state in the PWM timer&counter */
 #define PWM_TMR_MAX               4095
-/* Maximal filter length = filter buffer length */
+/*! Maximal filter length = filter buffer length */
 #define FILER_LEN_MAX             1000
 
 /* Private typedefs ----------------------------------------------------------*/
 
-/* Definition of all private variables */
+/*! Definition of all private variables */
 typedef struct
 {
   uint16_t filter_len;            ///< filter buffer actual length
@@ -34,23 +37,23 @@ typedef struct
 
 /* Public variables ----------------------------------------------------------*/
 
-/* PWM timer instance */
+/*! PWM timer instance */
 extern TIM_HandleTypeDef PWM_TIMER_INSTANCE;
 
 /* Private variables ---------------------------------------------------------*/
 
-/* All private variables except filter memory */
+/*! All private variables except filter memory */
 Mot_Private_t mot;
 
-/* Filter buffer */
+/*! Filter buffer */
 int16_t fltbuf[FILER_LEN_MAX];
 
 /* Private function prototypes -----------------------------------------------*/
 
-/* Filter initialization */
+/*! Filter initialization */
 static void filt_init(uint16_t length);
 
-/* Filter job */
+/*! Filter job */
 static int16_t filt_job(int16_t sample);
 
 /* Functions -----------------------------------------------------------------*/
@@ -178,3 +181,5 @@ static int16_t filt_job(int16_t sample)
 }
 
 /* ---------------------------------------------------------------------------*/
+
+/** @} */

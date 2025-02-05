@@ -1,8 +1,11 @@
-/*
- * modbus_slave.c
+/**
+ * @file       modbus_slave.c
+ * @author     OK1CTR
+ * @date       Jan 21, 2025
+ * @brief      Modbus slave over USB module
  *
- *  Created on: Dec 10, 2024
- *      Author: Riki
+ * @addtogroup grModbus
+ * @{
  */
 
 /* Includes ------------------------------------------------------------------*/
@@ -15,60 +18,44 @@
 
 /* Private defines -----------------------------------------------------------*/
 
-/**
- * Modbus broadcast address
- */
+/*! Modbus broadcast address */
 #define MODBUS_BROADCAST                   0
-/**
- * Modbus exception mask
- */
+
+/*! Modbus exception mask */
 #define MODBUS_EXCEPTION_MASK           0x80
-/**
- * Modbus header length
- */
+
+/*! Modbus header length */
 #define MODBUS_HEADER_LENGTH               2
-/**
- * Modbus minimal payload length
- */
+
+/*! Modbus minimal payload length */
 #define MODBUS_MIN_PAYLOAD_LENGTH          4
-/**
- * Modbus maximal data length
- */
+/*! Modbus maximal data length */
 #define MODBUS_DATA_LENGTH               252
-/**
- * Modbus CRC length
- */
+/*! Modbus CRC length */
 #define MODBUS_CRC_LENGTH                  2
 
-/**
- * Registers offset
- */
+/*! Holding registers offset */
 #define MODBUS_OFFSET_HOLDING              0
+/*! Input registers offset */
 #define MODBUS_OFFSET_INPUT                0
 
-/**
- * Return exception codes
- */
+/*! Return exception codes - invalid command received */
 #define MODBUS_EXCEPT_INVALID_COMMAND      1
+/*! Return exception codes - invalid address received */
 #define MODBUS_EXCEPT_INVALID_ADDRESS      2
+/*! Return exception codes - invalid size of received message */
 #define MODBUS_EXCEPT_INVALID_SIZE         3
 
-/**
- * Modbus slave address range
- */
+/*! Modbus slave address range */
 #define MODBUS_SLAVE_ADDR                 22
 
-/**
- * Modbus frame receive timeout in milliseconds
- */
+/*! Modbus frame receive timeout in milliseconds */
 #define MODBUS_RECEIVE_TIMEOUT           100
 
 /* Private macros  -----------------------------------------------------------*/
 /* Private typedefs ----------------------------------------------------------*/
 
-/**
- * Definition of Modbus function codes
- */
+/*! Definition of Modbus function codes */
 typedef enum
 {
   MB_READ_COILS = 1,           //!< MB_READ_COILS
@@ -82,9 +69,7 @@ typedef enum
 } MbSlave_Functions_t;
 
 
-/**
- * Definition of all private variables
- */
+/*! Definition of all private variables */
 typedef struct
 {
   uint32_t timer;
@@ -93,9 +78,7 @@ typedef struct
   uint16_t rxPtr;
 } MbSlave_Private_t;
 
-/**
- * A frame buffer
- */
+/*! A frame buffer */
 typedef struct
 {
   uint8_t slaveAddr;
@@ -107,9 +90,7 @@ typedef struct
 
 /* Private constants ---------------------------------------------------------*/
 
-/**
- * Pre-computed CRC16 High byte
- */
+/*! Pre-computed CRC16 High byte */
 static const __attribute__((section (".sectionIsrConst"))) uint8_t tableCrcHi[] = {
     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81,
     0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,
@@ -131,9 +112,7 @@ static const __attribute__((section (".sectionIsrConst"))) uint8_t tableCrcHi[] 
     0x40
 };
 
-/**
- * Pre-computed CRC16 Low byte
- */
+/*! Pre-computed CRC16 Low byte */
 static const uint8_t tableCrcLo[] = {
     0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06, 0x07, 0xC7, 0x05, 0xC5, 0xC4,
     0x04, 0xCC, 0x0C, 0x0D, 0xCD, 0x0F, 0xCF, 0xCE, 0x0E, 0x0A, 0xCA, 0xCB, 0x0B, 0xC9, 0x09,
@@ -157,39 +136,47 @@ static const uint8_t tableCrcLo[] = {
 
 /* Private variables ---------------------------------------------------------*/
 
-/**
- * Instance of all private variables (except HAL handles)
- */
+/*! Instance of all private variables (except HAL handles) */
 static MbSlave_Private_t mod;
 
-/**
- * Instance for holding inbound and outbound frames
- */
+/*! Instance for holding incoming message */
 static MbSlave_Frame_t inFrame;
-static uint8_t outFram;
+/*! Instance for holding outgoing message */
 static MbSlave_Frame_t outFrame;
-
-/* Public variables ----------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
 
+/**
+ * @brief Check the incoming message validity
+ * @return Status Status Standard status code (0 is OK)
+ */
 static Status_t MbSlave_CheckFrame(void);
 
+/**
+ * @brief Process the incoming message contents
+ * @return Status Status Standard status code (0 is OK)
+ */
 static Status_t MbSlave_ProcessFrame(void);
 
+/**
+ * @bfief Computation of CRC16 using pre-computed tables
+ * @param frame Pointer to the message buffer
+ * @return Status Status Standard status code (0 is OK)
+ */
 static Status_t MbSlave_CRC16(MbSlave_Frame_t *frame);
 
 /* Functions -----------------------------------------------------------------*/
 
+/* Initialize Modbus module */
 Status_t MbSlave_Init(void)
 {
   Status_t ret = STATUS_OK;
   MbSlave_UpdateSlaveAddress();
-  outFram = 1;
   return ret;
 }
 
 
+/* Settings of modbus has changed, reinitialize module */
 Status_t MbSlave_SettingsChanged(void)
 {
   Status_t ret = STATUS_OK;
@@ -206,6 +193,7 @@ Status_t MbSlave_SettingsChanged(void)
 }
 
 
+/* Receive chunk of incoming message, start decoding and receive timeout */
 Status_t MbSlave_Receive(uint8_t* chunk_data, uint32_t chunk_len)
 {
   Status_t ret = STATUS_OK;
@@ -236,7 +224,7 @@ Status_t MbSlave_Receive(uint8_t* chunk_data, uint32_t chunk_len)
 }
 
 
-/* Terminate current transfer and start waiting for next packet header. */
+/* Terminate current transfer and start waiting for next packet header */
 Status_t MbSlave_BusReset(void)
 {
   Status_t ret = STATUS_OK;
@@ -247,6 +235,7 @@ Status_t MbSlave_BusReset(void)
 }
 
 
+/* Incoming message handler */
 Status_t MbSlave_Handle(void)
 {
   Status_t ret = STATUS_OK;
@@ -255,26 +244,26 @@ Status_t MbSlave_Handle(void)
   {
     mod.frameOk = 0;
 
-    /* Process frame */
+    // process frame
     MbSlave_ProcessFrame();
 
-    /* Prepare and send response for unicast messages */
+    // prepare and send response for unicast messages
     if (inFrame.slaveAddr == mod.myAddress)
     {
-      /* Compose response and send it */
+      // compose response and send it
       outFrame.slaveAddr = mod.myAddress;
       MbSlave_CRC16(&outFrame);
       outFrame.data[outFrame.size] = outFrame.crc[0];
       outFrame.data[outFrame.size + 1] = outFrame.crc[1];
 
-      /* send packet response */
+      // send packet response
       CDC_Transmit_FS((uint8_t*) &outFrame, outFrame.size + MODBUS_CRC_LENGTH + MODBUS_HEADER_LENGTH);
       ret = STATUS_BUSY;
     }
     else
     {
     }
-    /* Start next reception */
+    // start next reception
     MbSlave_BusReset();
   }
 
@@ -292,6 +281,7 @@ Status_t MbSlave_Handle(void)
 }
 
 
+/* Call this function to update modbus slave address */
 Status_t MbSlave_UpdateSlaveAddress(void)
 {
   Status_t ret = STATUS_OK;
@@ -300,18 +290,20 @@ Status_t MbSlave_UpdateSlaveAddress(void)
   return ret;
 }
 
+/* Private Functions ---------------------------------------------------------*/
 
+/* Check the incoming message validity */
 static Status_t MbSlave_CheckFrame(void)
 {
   Status_t ret = STATUS_OK;
   uint8_t command;
   uint8_t supported = 0;
 
-  /* Check address */
+  // check address
   if (inFrame.slaveAddr == mod.myAddress || inFrame.slaveAddr == MODBUS_BROADCAST)
   {
     command = inFrame.funcCode;
-    /* Calculate size of data and check supported operation codes */
+    // calculate size of data and check supported operation codes
     if (command >= MB_READ_COILS && command <= MB_WRITE_SINGLE_REG)
     {
       inFrame.size = 0;
@@ -327,31 +319,31 @@ static Status_t MbSlave_CheckFrame(void)
       {
         if (inFrame.size % 8)
         {
-          inFrame.size = (inFrame.size / 8) + 2; /* 1 extra byte is for unaligned data, 1 byte for size */
+          inFrame.size = (inFrame.size / 8) + 2; // 1 extra byte is for unaligned data, 1 byte for size
         }
         else
         {
-          inFrame.size = (inFrame.size / 8) + 1; /* 1 byte for size */
+          inFrame.size = (inFrame.size / 8) + 1; // 1 byte for size
         }
       }
       else if (command == MB_WRITE_MULTIPLE_REGS)
       {
-        inFrame.size = (inFrame.size * 2) + 1; /* registers are 16b, 1 byte for size */
+        inFrame.size = (inFrame.size * 2) + 1; // registers are 16b, 1 byte for size
       }
       supported = 1;
     }
 
-    /* Add header of command to size variable */
+    // add header of command to size variable
     inFrame.size += MODBUS_MIN_PAYLOAD_LENGTH;
-    /* Check maximal length of modbus frame */
+    // check maximal length of modbus frame
     if (inFrame.size < MODBUS_DATA_LENGTH - 2)  // CRC must fit into received data
     {
-      /* compute CRC16 from received packet */
+      // compute CRC16 from received packet
       MbSlave_CRC16(&inFrame);
-      /* we have original CRC16 in received data */
+      // we have original CRC16 in received data
       if (inFrame.crc[0] == inFrame.data[inFrame.size] && inFrame.crc[1] == inFrame.data[inFrame.size + 1] && supported)
       {
-        /* move to next step */
+        // move to next step
         mod.frameOk = 1;
       }
     }
@@ -361,6 +353,7 @@ static Status_t MbSlave_CheckFrame(void)
 }
 
 
+/* Process the incoming message contents */
 static Status_t MbSlave_ProcessFrame(void)
 {
   Status_t ret = STATUS_OK;
@@ -371,11 +364,11 @@ static Status_t MbSlave_ProcessFrame(void)
   uint16_t offset = 0;
   uint16_t val;
 
-  /* prepare address for outframe */
+  // prepare address for outframe
   outFrame.funcCode = inFrame.funcCode;
-  /* default size for error */
+  // default size for error
   outFrame.size = 1;
-  /* parse start address and count */
+  // parse start address and count
   addr = inFrame.data[0];
   addr <<= 8;
   addr |= inFrame.data[1];
@@ -398,18 +391,18 @@ static Status_t MbSlave_ProcessFrame(void)
       size = MB_HOLD_LAST;
       break;
     default:
-      /* prepare exception */
+      // prepare exception
       size = 0;
       outFrame.funcCode = inFrame.funcCode + MODBUS_EXCEPTION_MASK;
-      outFrame.data[0] = MODBUS_EXCEPT_INVALID_COMMAND; /* invalid function code */
+      outFrame.data[0] = MODBUS_EXCEPT_INVALID_COMMAND; // invalid function code
       break;
   }
 
-  /* some value checking */
+  // some value checking
   if (outFrame.funcCode < MODBUS_EXCEPTION_MASK && (count < 1 || count > 0x7b))
   {
     outFrame.funcCode = inFrame.funcCode + MODBUS_EXCEPTION_MASK;
-    outFrame.data[0] = MODBUS_EXCEPT_INVALID_SIZE; /* invalid size/value */
+    outFrame.data[0] = MODBUS_EXCEPT_INVALID_SIZE; // invalid size/value
   }
 
   if (outFrame.funcCode < MODBUS_EXCEPTION_MASK
@@ -417,17 +410,17 @@ static Status_t MbSlave_ProcessFrame(void)
   {
     {
       outFrame.funcCode = inFrame.funcCode + MODBUS_EXCEPTION_MASK;
-      outFrame.data[0] = MODBUS_EXCEPT_INVALID_ADDRESS; /* invalid address */
+      outFrame.data[0] = MODBUS_EXCEPT_INVALID_ADDRESS; // invalid address
     }
   }
 
-  /* it looks ok so far */
+  // it looks ok so far
   if (outFrame.funcCode < MODBUS_EXCEPTION_MASK)
   {
-    /* Subtract offset from address */
+    // subtract offset from address
     addr -= offset;
 
-    /* do the register stuff */
+    // do the register stuff
     switch (inFrame.funcCode)
     {
       case MB_READ_HOLDING_REGS:
@@ -473,12 +466,7 @@ static Status_t MbSlave_ProcessFrame(void)
 }
 
 
-/**
- * Computation of CRC16 using pre-computed tables.
- *
- * @param frame - data frame
- * @return Status - standard status code (0 - OK)
- */
+/* Computation of CRC16 using pre-computed tables */
 static Status_t MbSlave_CRC16(MbSlave_Frame_t *frame)
 {
   uint8_t index;
@@ -486,7 +474,7 @@ static Status_t MbSlave_CRC16(MbSlave_Frame_t *frame)
   frame->crc[1] = 0xFF;
   uint16_t i;
 
-  /* calculate the CRC */
+  // calculate the CRC
   index = frame->crc[0] ^ frame->slaveAddr;
   frame->crc[0] = frame->crc[1] ^ tableCrcHi[index];
   frame->crc[1] = tableCrcLo[index];
@@ -504,5 +492,6 @@ static Status_t MbSlave_CRC16(MbSlave_Frame_t *frame)
   return STATUS_OK;
 }
 
-/* Private Functions ---------------------------------------------------------*/
 /* ---------------------------------------------------------------------------*/
+
+/** @} */
