@@ -77,7 +77,7 @@ Simple and quick-built electronic control unit for a screw actuator moving a pis
 
 **Holding registers for programmable wave data**
 
-Programmable wave table has 8 positions to define steps by motor speed and time of run. It occupied 16 registers from base address 100. Example of first step is shown here.
+Programmable wave table has 8 positions to define steps by motor speed and time of run. It occupied 16 registers from base address 100. Example of first step is shown here:
 
 | Address | Min | Max | Function |
 | --- | --- | --- | --- |
@@ -86,7 +86,7 @@ Programmable wave table has 8 positions to define steps by motor speed and time 
 
 Step time means the number of PWM cycles. Speed is the PWM duty cycle, while the sign determines the direction, positive is forward, negative is rewind. Zero step time is interpreted as end of wave data. Changing direction for a short time after motor run can be used as a brake.
 
-The default programmable wave function is this.
+The default programmable wave function is this:
 
 | Speed | Time |
 | --- | --- |
