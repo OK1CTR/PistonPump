@@ -120,6 +120,10 @@ Status_t MbRtu_ReadHoldingRegCallback(uint16_t address, uint16_t *value)
   return ret;
 }
 
+/*! Test upper value limit */
+#define TEST_MAX(dest, src, lim) if (src <= lim) (dest) = (src); else ret = STATUS_ERROR;
+/*! Test lower value limit */
+#define TEST_MIN(dest, src, lim) if (src >= lim) (dest) = (src); else ret = STATUS_ERROR;
 
 Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
 {
@@ -142,19 +146,19 @@ Status_t MbRtu_WriteHoldingRegCallback(uint16_t address, uint16_t value)
       cfg.forward_time = value;
       break;
     case MB_SPEED_FWD:
-      cfg.forward_speed = value;
+      TEST_MAX(cfg.forward_speed, value, CFG_SPEED_MAX)
       break;
     case MB_TIME_REW:
       cfg.rewind_time = value;
       break;
     case MB_SPEED_REW:
-      cfg.rewind_speed = value;
+      TEST_MAX(cfg.rewind_speed, value, CFG_SPEED_MAX)
       break;
     case MB_FILTER_LENGTH:
       cfg.filter_length = value;
       break;
     case MB_REPEAT_CNT:
-      cfg.repeat_count = value;
+      TEST_MAX(cfg.repeat_count, value, CFG_REPEAT_CNT_MAX)
       break;
     case MB_REPEAT_PERIOD:
       cfg.repeat_period = value;

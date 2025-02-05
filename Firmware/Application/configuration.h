@@ -20,6 +20,11 @@
 /*! Default register contents */
 #define CFG_DEFAULT {0, 0, 0, 1000, 1000, 1000, 1000, 100, 13, 1100}
 
+/*! Speed maximal limit */
+#define CFG_SPEED_MAX         1000
+/*! Wave repeat count maximal limit */
+#define CFG_REPEAT_CNT_MAX      16
+
 /* Typedefs ------------------------------------------------------------------*/
 
 /* Configuration, input and output data structure */

@@ -271,7 +271,10 @@ Status_t prog_wave_write(uint16_t address, uint16_t value)
   }
   else
   {
-    tt_buf[address / 2].volt = value;
+    int16_t sigval = (int16_t)value;
+    if (sigval > CFG_SPEED_MAX) sigval = CFG_SPEED_MAX;
+    if (sigval < -CFG_SPEED_MAX) sigval = -CFG_SPEED_MAX;
+    tt_buf[address / 2].volt = sigval;
   }
   return STATUS_OK;
 }
